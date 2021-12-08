@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stein, saks, papir</title>
+    <style> 
+        body {
+            font-family: "Century Gothic", arial, sans-serif;
+            background-color:#ecf0f1;
+        }
+
+        img {
+            margin:10px;
+        }
+        #maskin {
+            margin-left:110px;
+        }
+
+        .innpakning {
+            width:980px;
+            margin:120px auto;
+            font-size: 0;
+        }
+
+        p {
+            font-size: 21px;
+        }
+        
+        #stein, #saks, #papir {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="innpakning">
+        <p id="spillerPoeng"> <b>Spiller:</b>  0</p>
+          
+            <p id="maskinPoeng"> <b>Maskin:</b>0</p>
+
+            <img src="Bildersakspapirstein/stein.png" width="200" height="200" 
+            alt="spillerstein" id ="stein"> 
+
+            <img src="Bildersakspapirstein/saks.png" width="200" height="200" 
+            alt="spillersaks" id ="saks"> 
+
+            <img src="Bildersakspapirstein/papir.png" width="200" height="200" 
+            alt ="spillerpapir" id ="papir"> 
+            
+            <img src="Bildersakspapirstein/maskin_ukjent.png" width="200" height="200"
+             alt="maskinensvalg" id="maskin">
+
+            <p id="info"></p>
+
+<script>
+    var VINNERSUM = 5;
+    var spillerPoeng = 0;
+    var maskinPoeng = 0;
+
+    var spillerPoengEl = document.querySelector("#spillerPoeng");
+    var maskinPoengEl = document.querySelector("#maskinPoeng");
+    var infoEl = document.querySelector("#info");
+
+    var steinEl = document.querySelector("#stein");
+    var saksEl = document.querySelector("#saks");
+    var papirEl = document.querySelector("#papir");
+    var maskinEl = document.querySelector("#maskin");
+
+    steinEl.addEventListener("click", sjekkResultat);
+    saksEl.addEventListener("click", sjekkResultat);
+    papirEl.addEventListener("click", sjekkResultat);
+
+    infoEl.innerHTML="Velg stein, saks eller papir. Førstemann til "+VINNERSUM+" poeng vinner spillet.";
+    function sjekkResultat(e) {
+        console.log("Du klikket på et bilde.");
+    
+    var spillerValg = e.target.id;
+
+     console.log("Spiller valgte: " + spillerValg)
+
+     var tilfeldig = Math.floor(Math.random() * 3) + 1;
+     var maskinValg;
+
+     if (tilfeldig === 1) {
+         maskinValg = "stein";
+     } 
+     else if (tilfeldig === 2) {
+         maskinValg = "saks";
+     }
+     else if (tilfeldig === 3) {
+         maskinValg = "papir";
+    }
+
+    console.log("Maskinen valgte: " + maskinValg);
+    maskinEl.src = "Bildersakspapirstein/maskin_ukjent" + maskinValg + ".png";
+
+    if (spillerValg === maskinValg) {
+        }
+         else if (spillerValg === "stein") { 
+            if (maskinValg === "saks") {
+             spillerPoeng++;
+            }
+        else if(maskinValg === "papir") {
+            maskinPoeng++;
+                }
+        }
+
+         else if (spillerValg === "saks") {
+              if (maskinValg === "papir") {
+                  spillerPoeng++;
+                  } 
+            else if (maskinValg === "stein") { 
+                maskinPoeng++;
+                }
+            }
+            
+            else if(spillerValg === "papir") {
+                if(maskinValg === "stein") {
+                    spillerPoeng++; }
+
+                    else if(maskinValg === "saks") {
+                        maskinPoeng++;
+                    }
+                }
+                
+                spillerPoengEl.innerHTML ="<b>Spiller:</b>" + spillerPoeng;
+                maskinPoengEl.innerHTML="<b>Maskin:</b>" + maskinPoeng;
+
+                if (spillerPoeng === VINNERSUM || maskinPoeng === VINNERSUM) {
+                    steinEl.removeEventListener("click", sjekkResultat)
+                    saksEl.removeEventListener("click", sjekkResultat)
+                    papirEl.removeEventListener("click", sjekkResultat)
+
+                    steinEl.style.cursor = "auto";
+                    saksEl.style.cursor = "auto";
+                    papirEl.style.cursor = "auto";
+
+                    if (spillerPoeng ===VINNERSUM) {
+                        infoEl.innerHTML = "Gratulerer! Du vant!";
+                    } else {
+                        infoEl.innerHTML = "Auda! Du ble slått av en maskin...";
+                    }
+                }
+            }
+</script>
+    
+</body>
+</html>
